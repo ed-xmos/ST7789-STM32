@@ -1,5 +1,5 @@
 # ST7789-STM32
-Using STM32's Hardware SPI to drive a ST7789 based IPS display.
+Using XCORE AI to drive a ST7789 based IPS display.
 
 ## Supported Displays
 - 135*240 resolution  
@@ -22,8 +22,8 @@ This code has been tested on 240x240 IPS screen. You can look into **demo** dire
 
 
 Test conditions:
-- STM32F103C8T6  
-- Keil MDK5  
+- XCORE-AI-EXPLORER  
+- Xtimecomposer 15.0.5 
 
 ## **Important**
 
@@ -34,9 +34,4 @@ The simplest way is to configure these 2 GPIO to `Pull-up` Mode manually in Cube
 # Special thanks to
 
 #### Reference
-- [ananevilya's Arduino-ST7789-Lib](https://github.com/ananevilya/Arduino-ST7789-Library)  
-- [afiskon's stm32-st7735 lib](https://github.com/afiskon/stm32-st7735)
-
-#### Contributor
-- [JasonLrh](https://github.com/JasonLrh)  
-- [ZiangCheng](https://github.com/ZiangCheng)  
+- https://github.com/Floyd-Fish/ST7789-STM32
