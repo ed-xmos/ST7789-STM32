@@ -110,20 +110,29 @@ static void ST7789_SetAddressWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint1
  */
 void ST7789_Init(void)
 {
-	HAL_Delay(25);
     ST7789_RST_Clr();
     HAL_Delay(25);
     ST7789_RST_Set();
-    HAL_Delay(50);
+    HAL_Delay(500);
 		
+    ST7789_WriteCommand(ST7789_SWRESET);              //  SW reset
+    HAL_Delay(150);
+    ST7789_WriteCommand (ST7789_SLPOUT);    //  Out of sleep mode
+    HAL_Delay(10);
+
+
     ST7789_WriteCommand(ST7789_COLMOD);		//	Set color mode
     ST7789_WriteSmallData(ST7789_COLOR_MODE_16bit);
+    HAL_Delay(10);
+
+
+    ST7789_SetRotation(ST7789_ROTATION);    //  MADCTL (Display Rotation)
+
   	ST7789_WriteCommand(0xB2);				//	Porch control
 	{
 		uint8_t data[] = {0x0C, 0x0C, 0x00, 0x33, 0x33};
 		ST7789_WriteData(data, sizeof(data));
 	}
-	ST7789_SetRotation(ST7789_ROTATION);	//	MADCTL (Display Rotation)
 	
 	/* Internal LCD Voltage generator settings */
     ST7789_WriteCommand(0XB7);				//	Gate Control
@@ -143,26 +152,49 @@ void ST7789_Init(void)
     ST7789_WriteCommand (0xD0);				//	Power control
     ST7789_WriteSmallData (0xA4);			//	Default value
     ST7789_WriteSmallData (0xA1);			//	Default value
-	/**************** Division line ****************/
 
+    /**************** Division line ****************/
 	ST7789_WriteCommand(0xE0);
 	{
 		uint8_t data[] = {0xD0, 0x04, 0x0D, 0x11, 0x13, 0x2B, 0x3F, 0x54, 0x4C, 0x18, 0x0D, 0x0B, 0x1F, 0x23};
 		ST7789_WriteData(data, sizeof(data));
 	}
-
     ST7789_WriteCommand(0xE1);
 	{
 		uint8_t data[] = {0xD0, 0x04, 0x0C, 0x11, 0x13, 0x2C, 0x3F, 0x44, 0x51, 0x2F, 0x1F, 0x1F, 0x20, 0x23};
 		ST7789_WriteData(data, sizeof(data));
 	}
-    ST7789_WriteCommand (ST7789_INVON);		//	Inversion ON
-	ST7789_WriteCommand (ST7789_SLPOUT);	//	Out of sleep mode
-  	ST7789_WriteCommand (ST7789_NORON);		//	Normal Display on
-  	ST7789_WriteCommand (ST7789_DISPON);	//	Main screen turned on	
 
-	HAL_Delay(50);
-	ST7789_Fill_Color(BLACK);				//	Fill with Black.
+
+#define ST7789_TFTWIDTH     240
+#define ST7789_TFTHEIGHT    240
+#define ST7789_240x240_XSTART 0
+#define ST7789_240x240_YSTART 0
+
+    ST7789_WriteCommand(ST7789_CASET);
+    {uint8_t data[] = {0x00,
+          ST7789_240x240_XSTART,          // XSTART = 0
+          (ST7789_TFTWIDTH+ST7789_240x240_XSTART) >> 8,
+          (ST7789_TFTWIDTH+ST7789_240x240_XSTART) & 0xFF};
+    ST7789_WriteData(data, sizeof(data));}
+
+    ST7789_WriteCommand(ST7789_RASET);
+    {uint8_t data[] = {0x00,
+          0x00, ST7789_240x240_YSTART,          // YSTART = 0
+          (ST7789_TFTHEIGHT+ST7789_240x240_YSTART) >> 8,
+          (ST7789_TFTHEIGHT+ST7789_240x240_YSTART) & 0xFF,};
+    ST7789_WriteData(data, sizeof(data));}
+
+    // while(1);
+    ST7789_WriteCommand (ST7789_INVON);		//	Inversion ON
+    HAL_Delay(10);
+  	ST7789_WriteCommand (ST7789_NORON);		//	Normal Display on
+    HAL_Delay(10);
+  	ST7789_WriteCommand (ST7789_DISPON);	//	Main screen turned on	
+    // while(1);
+	HAL_Delay(500);
+	ST7789_Fill_Color(RED);				//	Fill with Black.
+    // while(1);
 }
 
 /**
@@ -174,6 +206,7 @@ void ST7789_Fill_Color(uint16_t color)
 {
 	uint16_t i, j;
 	ST7789_SetAddressWindow(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1);
+    // while(1);
 	ST7789_Select();
 	for (i = 0; i < ST7789_WIDTH; i++)
 		for (j = 0; j < ST7789_HEIGHT; j++) {

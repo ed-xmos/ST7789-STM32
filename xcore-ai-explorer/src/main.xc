@@ -10,6 +10,11 @@ SPI_HandleTypeDef hspi1;
 void app(void){
     printf("hello world!\n");
     ST7789_Init();
+    printf("ST7789_Init complete\n");
+    while (1)
+    {
+        ST7789_Test();
+    }
 }
 
 int main(void){
