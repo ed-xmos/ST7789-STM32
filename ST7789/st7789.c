@@ -208,11 +208,18 @@ void ST7789_Fill_Color(uint16_t color)
 	ST7789_SetAddressWindow(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1);
     // while(1);
 	ST7789_Select();
-	for (i = 0; i < ST7789_WIDTH; i++)
-		for (j = 0; j < ST7789_HEIGHT; j++) {
-			uint8_t data[] = {color >> 8, color & 0xFF};
-			ST7789_WriteData(data, sizeof(data));
-		}
+	for (i = 0; i < ST7789_WIDTH; i++){
+		// for (j = 0; j < ST7789_HEIGHT; j++) {
+		// 	uint8_t data[] = {color >> 8, color & 0xFF};
+		// 	ST7789_WriteData(data, sizeof(data));
+		// }
+        uint8_t data[ST7789_HEIGHT*2];
+        for (j = 0; j < ST7789_HEIGHT; j++) {
+            data[2 * j] = color >> 8;
+            data[2 * j+1] = color & 0xFF;
+            }
+        ST7789_WriteData(data, sizeof(data));
+    }
 	ST7789_UnSelect();
 }
 
@@ -702,9 +709,9 @@ void ST7789_Test(void)
 	HAL_Delay(500);
 
 	ST7789_WriteString(10, 10, "Font test.", Font_16x26, GBLUE, WHITE);
-	ST7789_WriteString(10, 50, "Hello Steve!", Font_7x10, RED, WHITE);
-	ST7789_WriteString(10, 75, "Hello Steve!", Font_11x18, YELLOW, WHITE);
-	ST7789_WriteString(10, 100, "Hello Steve!", Font_16x26, MAGENTA, WHITE);
+	ST7789_WriteString(10, 50, "Hello Xmos!", Font_7x10, RED, WHITE);
+	ST7789_WriteString(10, 75, "Hello Xmos!", Font_11x18, YELLOW, WHITE);
+	ST7789_WriteString(10, 100, "Hello Xmos!", Font_16x26, MAGENTA, WHITE);
 	HAL_Delay(1000);
 
 	ST7789_Fill_Color(RED);
@@ -734,7 +741,7 @@ void ST7789_Test(void)
 	HAL_Delay(1000);
 
 	ST7789_Fill_Color(RED);
-	ST7789_WriteString(10, 10, "Filled Tri", Font_11x18, YELLOW, RED);
+	ST7789_WriteString(10, 10, "Filled Triangle", Font_11x18, YELLOW, RED);
 	ST7789_DrawFilledTriangle(30, 30, 30, 70, 60, 40, WHITE);
 	HAL_Delay(1000);
 

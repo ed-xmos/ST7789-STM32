@@ -11,7 +11,7 @@ XCC_FLAGS	= -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Os -report -save-temp
 # The USED_MODULES variable lists other module used by the application. These
 # modules will extend the SOURCE_DIRS, INCLUDE_DIRS and LIB_DIRS variables.
 # Modules are expected to be in the directory above the BASE_DIR directory.
-USED_MODULES = lib_spi ST7789
+USED_MODULES = ST7789
 
 #=============================================================================
 # The following part of the Makefile includes the common build infrastructure

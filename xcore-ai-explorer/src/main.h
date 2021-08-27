@@ -15,6 +15,7 @@
 
 #define HAL_MAX_DELAY 100 //no idea what units
 
+void HAL_INIT(void);
 void HAL_PORT_RST_CLR(void);
 void HAL_PORT_RST_SET(void);
 void HAL_PORT_DC_CLR(void);

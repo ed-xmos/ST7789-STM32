@@ -9,6 +9,7 @@ SPI_HandleTypeDef hspi1;
 
 void app(void){
     printf("hello world!\n");
+    HAL_INIT();
     ST7789_Init();
     printf("ST7789_Init complete\n");
     while (1)
@@ -23,7 +24,6 @@ int main(void){
         on tile[0]:{
             par{
                 app();
-                hal_task();
             }
         }
     }
