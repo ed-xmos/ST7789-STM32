@@ -2,6 +2,9 @@ APP_NAME =
 
 TARGET = XCORE-AI-EXPLORER
 
+#Run if file doesn't exist
+$(shell [ ! -f monty1.h ] && python3 images/anigif_to_raw.py -j images/monty240x240_1.jpeg monty1.h)
+$(shell [ ! -f monty2.h ] && python3 images/anigif_to_raw.py -j images/monty_240x240_2.jpeg monty2.h)
 
 # The flags passed to xcc when building the application
 XCC_FLAGS	= -fcomment-asm -Xmapper --map -Xmapper MAPFILE -Os -report -save-temps -g -fxscope 

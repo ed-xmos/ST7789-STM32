@@ -1,4 +1,5 @@
 #include "st7789.h"
+#include <xcore/hwtimer.h>
 
 /**
  * @brief Write command to ST7789 controller
@@ -193,7 +194,7 @@ void ST7789_Init(void)
   	ST7789_WriteCommand (ST7789_DISPON);	//	Main screen turned on	
     // while(1);
 	HAL_Delay(500);
-	ST7789_Fill_Color(RED);				//	Fill with Black.
+	ST7789_Fill_Color(BLACK);				//	Fill with Black.
     // while(1);
 }
 
@@ -204,23 +205,28 @@ void ST7789_Init(void)
  */
 void ST7789_Fill_Color(uint16_t color)
 {
+    uint32_t t0 = get_reference_time();   
+
 	uint16_t i, j;
 	ST7789_SetAddressWindow(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1);
     // while(1);
+    uint8_t data[ST7789_HEIGHT*2];
+    for (j = 0; j < ST7789_HEIGHT; j++) {
+        data[2 * j] = color >> 8;
+        data[2 * j+1] = color & 0xFF;
+        }
 	ST7789_Select();
 	for (i = 0; i < ST7789_WIDTH; i++){
 		// for (j = 0; j < ST7789_HEIGHT; j++) {
 		// 	uint8_t data[] = {color >> 8, color & 0xFF};
 		// 	ST7789_WriteData(data, sizeof(data));
 		// }
-        uint8_t data[ST7789_HEIGHT*2];
-        for (j = 0; j < ST7789_HEIGHT; j++) {
-            data[2 * j] = color >> 8;
-            data[2 * j+1] = color & 0xFF;
-            }
         ST7789_WriteData(data, sizeof(data));
     }
 	ST7789_UnSelect();
+
+    uint32_t t1 = get_reference_time();   
+    printf("fill: %lu us\n", (t1 - t0) / 100);
 }
 
 /**

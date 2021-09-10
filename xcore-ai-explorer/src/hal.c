@@ -45,7 +45,7 @@ void HAL_INIT(void){
 
 HAL_StatusTypeDef HAL_SPI_Transmit(SPI_HandleTypeDef *hspi, uint8_t *pData, uint16_t Size, uint32_t Timeout){
 
-    printf("Size: %d\n", Size);
+    // printf("Size: %d\n", Size);
     // spi_master_start_transaction(&spi_dev);
     spi_master_transfer(&spi_dev, pData, NULL, Size);
     // spi_master_end_transaction(&spi_dev);
